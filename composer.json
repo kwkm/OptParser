@@ -1,0 +1,22 @@
+{
+    "name": "kwkm/optparser",
+    "description": "Command line option parser",
+    "keywords": ["cli"],
+    "type": "library",
+    "license": "MIT",
+    "homepage": "https://github.com/kwkm/OptParser",
+    "authors": [
+        {
+            "name": "Takehiro Kawakami",
+            "email": "take@kwkm.org"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "4.5.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Kwkm\\OptParser": "src/"
+        }
+    }
+}
