@@ -32,6 +32,7 @@ class OptionParser
             switch ($this->detectOptionType($option->current())) {
                 case OptionType::VALUE:
                     $this->setArgument($option->current());
+                    $option->next();
                     break;
                 case OptionType::SHORT_OPTION:
                 case OptionType::LONG_OPTION:
@@ -39,6 +40,7 @@ class OptionParser
                     $option->next();
                     if ($this->detectOptionType($option->current()) === OptionType::VALUE) {
                         $this->setOption($key, $option->current());
+                        $option->next();
                     } else {
                         $this->setOption($key, true);
                     }
@@ -47,12 +49,13 @@ class OptionParser
                 case OptionType::LONG_OPTION_WITH_VALUE:
                     list($key, $value) = explode('=', $option->current(), 2);
                     $this->setOption($key, $value);
+                $option->next();
                     break;
                 case OptionType::MULTIPLE_OPTION:
                     $this->splitMultiOption($option->current());
+                    $option->next();
                     break;
             }
-            $option->next();
         }
     }
 
