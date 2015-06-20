@@ -40,13 +40,15 @@ class OptionParser
                     $option->next();
                 if (!$option->valid()) {
                     $this->setOption($key, true);
-                    } else {
+
+                    return;
+                }
+
                     if ($this->detectOptionType($option->current()) === OptionType::VALUE) {
                         $this->setOption($key, $option->current());
                         $option->next();
                     } else {
                         $this->setOption($key, true);
-                    }
                     }
                     break;
                 case OptionType::SHORT_OPTION_WITH_VALUE:
@@ -68,9 +70,17 @@ class OptionParser
         return $this->argument;
     }
 
-    public function getOption()
+    public function getOption($key = null, $default = null)
     {
-        return $this->option;
+        if (is_null($key)) {
+            return $this->option;
+        }
+
+        if (isset($this->option[$key])) {
+            return $this->option[$key];
+        }
+
+        return $default;
     }
 
     private function splitMultiOption($value)
@@ -136,6 +146,7 @@ class OptionParser
 
     public function __construct($argv = array(), $mode = OptionParser::DUPLICATE_OVERWRITE)
     {
+        $this->option = array();
         $this->argument = array();
         $this->argumentCounter = 0;
         $this->parseMode = $mode;

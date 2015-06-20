@@ -106,4 +106,20 @@ class OptionParserTest extends \PHPUnit_Framework_TestCase
         $parsedOption = $mock->getOption();
         $this->assertEquals('shortEqual', $parsedOption['-e']);
     }
+
+    public function testGetOption()
+    {
+        $testArgument = array(
+            '-h',
+            'localhost',
+        );
+
+        $mock = \TestMock::on(
+            new \Kwkm\OptParser\OptionParser($testArgument)
+        );
+
+        $this->assertEquals('localhost', $mock->getOption('-h', 'www.example.com'));
+        $this->assertEquals('www.example.com', $mock->getOption('--host', 'www.example.com'));
+        $this->assertNull($mock->getOption('--host'));
+    }
 }
