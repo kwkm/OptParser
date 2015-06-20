@@ -8,7 +8,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 class OptionParserTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testOverwriteOption()
+    public function testDuplicateOverwriteOption()
     {
         $testArgument = array(
             '-h',
@@ -18,14 +18,32 @@ class OptionParserTest extends \PHPUnit_Framework_TestCase
         );
 
         $mock = \TestMock::on(
-            new \Kwkm\OptParser\OptionParser($testArgument)
+            new \Kwkm\OptParser\OptionParser($testArgument, \Kwkm\OptParser\OptionParser::DUPLICATE_OVERWRITE)
         );
 
         $parsedOption = $mock->getOption();
         $this->assertEquals('www.example.com', $parsedOption['-h']);
     }
 
-    public function testParseOption()
+    public function testDuplicateArrayOption()
+    {
+        $testArgument = array(
+            '-h',
+            'localhost',
+            '-h',
+            'www.example.com',
+        );
+
+        $mock = \TestMock::on(
+            new \Kwkm\OptParser\OptionParser($testArgument, \Kwkm\OptParser\OptionParser::DUPLICATE_ARRAY)
+        );
+
+        $parsedOption = $mock->getOption();
+        $this->assertEquals('localhost', $parsedOption['-h'][0]);
+        $this->assertEquals('www.example.com', $parsedOption['-h'][1]);
+    }
+
+    public function testParseMultipleOption()
     {
         $testArgument = array(
             '-v',
@@ -59,5 +77,33 @@ class OptionParserTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(in_array('filename', $parsedArgument));
         $this->assertFalse(in_array('-v', $parsedArgument));
         $this->assertFalse(in_array('shortEqual', $parsedArgument));
+    }
+
+    public function testParseShortOption()
+    {
+        $testArgument = array(
+            '-v',
+        );
+
+        $mock = \TestMock::on(
+            new \Kwkm\OptParser\OptionParser($testArgument)
+        );
+
+        $parsedOption = $mock->getOption();
+        $this->assertTrue($parsedOption['-v']);
+    }
+
+    public function testParseShortValueOption()
+    {
+        $testArgument = array(
+            '-e=shortEqual',
+        );
+
+        $mock = \TestMock::on(
+            new \Kwkm\OptParser\OptionParser($testArgument)
+        );
+
+        $parsedOption = $mock->getOption();
+        $this->assertEquals('shortEqual', $parsedOption['-e']);
     }
 }
