@@ -83,6 +83,11 @@ class OptionParser
         return $default;
     }
 
+    public function isOption($key)
+    {
+        return array_key_exists($key, $this->option);
+    }
+
     private function splitMultiOption($value)
     {
         $splitArgument = preg_split("//", ltrim($value, '-'), null, PREG_SPLIT_NO_EMPTY);
