@@ -38,11 +38,15 @@ class OptionParser
                 case OptionType::LONG_OPTION:
                     $key = $option->current();
                     $option->next();
+                if (!$option->valid()) {
+                    $this->setOption($key, true);
+                    } else {
                     if ($this->detectOptionType($option->current()) === OptionType::VALUE) {
                         $this->setOption($key, $option->current());
                         $option->next();
                     } else {
                         $this->setOption($key, true);
+                    }
                     }
                     break;
                 case OptionType::SHORT_OPTION_WITH_VALUE:
