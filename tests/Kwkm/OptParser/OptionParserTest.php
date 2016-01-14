@@ -14,6 +14,8 @@ class OptionParserTest extends \PHPUnit_Framework_TestCase
             '-h',
             'localhost',
             '-h',
+            'example.com',
+            '-h',
             'www.example.com',
         );
 
@@ -31,6 +33,8 @@ class OptionParserTest extends \PHPUnit_Framework_TestCase
             '-h',
             'localhost',
             '-h',
+            'example.com',
+            '-h',
             'www.example.com',
         );
 
@@ -40,7 +44,8 @@ class OptionParserTest extends \PHPUnit_Framework_TestCase
 
         $parsedOption = $mock->getOption();
         $this->assertEquals('localhost', $parsedOption['-h'][0]);
-        $this->assertEquals('www.example.com', $parsedOption['-h'][1]);
+        $this->assertEquals('example.com', $parsedOption['-h'][1]);
+        $this->assertEquals('www.example.com', $parsedOption['-h'][2]);
     }
 
     public function testParseMultipleOption()
@@ -121,5 +126,20 @@ class OptionParserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('localhost', $mock->getOption('-h', 'www.example.com'));
         $this->assertEquals('www.example.com', $mock->getOption('--host', 'www.example.com'));
         $this->assertNull($mock->getOption('--host'));
+    }
+
+    public function testIsOption()
+    {
+        $testArgument = array(
+            '-h',
+            'localhost',
+        );
+
+        $mock = \TestMock::on(
+            new \Kwkm\OptParser\OptionParser($testArgument)
+        );
+
+        $this->assertTrue($mock->isOption('-h'));
+        $this->assertFalse($mock->isOption('-v'));
     }
 }
