@@ -94,7 +94,7 @@ class OptParser
 
     private function setOptionValue($optionName, $options)
     {
-        if ((isset($options['alias'])) and ($this->parser->isOption($options['alias']))) {
+        if ((isset($options['alias'])) && ($this->parser->isOption($options['alias']))) {
             $this->parsedOption[$optionName] = $this->parser->getOption($options['alias'], $options['default']);
         }
 

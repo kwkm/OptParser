@@ -108,7 +108,7 @@ class OptionParser
 
     private function setOption($key, $value)
     {
-        if (($this->parseMode === OptionParser::DUPLICATE_OVERWRITE) or (!isset($this->option[$key]))) {
+        if (($this->parseMode === OptionParser::DUPLICATE_OVERWRITE) || (!isset($this->option[$key]))) {
             $this->option[$key] = $value;
 
             return;
